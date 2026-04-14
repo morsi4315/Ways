@@ -34,7 +34,7 @@ using namespace std;
 {
     Point temp;
    // vector<Point> way;
-    cout<<"Поиск обратного пути: "<<endl;
+    cout<<"РџРѕР»СѓС‡РµРЅРЅС‹Р№ РїСѓС‚СЊ: "<<endl;
     temp = map.at(fin.y_cord, fin.x_cord);
     //cout<<temp.x_cord<<";"<<temp.y_cord<<endl;
     way.push_back(temp);

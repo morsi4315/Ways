@@ -64,7 +64,7 @@ void Brezenhem(Map map, vector<Point>& order, Point point0, Point point1)
 }
 
 
- //Первый предложенный, но не работающий метод
+ //?
 void add_in_order(vector<Point>& order, Point fin, Point point, Directs from){
     int pos = 0;
     for (int i = 0; i < order.size(); i++){
