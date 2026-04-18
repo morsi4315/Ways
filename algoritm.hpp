@@ -118,77 +118,6 @@ void Brezenhem(Map map, vector<Point>& order, Point point0, Point point1)
     }
 }
 
-
-void aprocs2(Map& map, vector<Point>& way, Point star, Point fin){
-    float eps = 0.001;
-    vector<Point> new_way;
-    vector<Point> order;
-    Point last_point;
-    Point temp;
-    last_point = way[0];
-    float last_ugle;
-    float actual_ugle;
-    int last_i = 0;
-    int i = last_i;
-    i++;
-    temp = way[i];
-    last_ugle = last_point.z_cord - temp.z_cord;
-    if (way.size() > 3){
-        while ((temp.x_cord != star.x_cord) and (temp.y_cord != star.y_cord)){
-            i++;
-            last_point = temp;
-            temp = way[i];
-            cout <<"==============="<< endl << "udle: " << endl;
-            actual_ugle = last_point.z_cord - temp.z_cord;
-            cout << actual_ugle << endl;
-            while ((last_ugle == actual_ugle) and ((temp.x_cord != star.x_cord) or (temp.y_cord != star.y_cord))){
-                i++;
-                last_point = temp;
-                temp = way[i];
-                actual_ugle = last_point.z_cord - temp.z_cord;
-                cout << actual_ugle << endl;
-            }
-
-            bool check = false;
-            if (i - last_i > 3){
-                check = true;
-                Brezenhem(map, order, way[last_i], way[i]);
-                int j = 0;
-                j++;
-                last_point = order[0];
-                temp = order[j];
-                last_ugle = last_point.z_cord - temp.z_cord;
-                j++;
-                while ((check) and (j < order.size())){
-                    last_point = temp;
-                    temp = order[j];
-                    actual_ugle = last_point.z_cord - temp.z_cord;
-                    if (last_ugle != actual_ugle){
-                        check = false;
-                    };
-                    j++;
-                }
-            }
-
-            if (check == true){
-                new_way.push_back(way[last_i]);
-                new_way.push_back(way[i]);
-            }
-            else {
-                for(int j = last_i; j <= i; j++){
-                    new_way.push_back(way[j]);
-                }
-            }
-            order.clear();
-            last_i = i;
-            //i++;
-            temp = way[i];
-            last_ugle = last_point.z_cord - temp.z_cord;
-        }
-        way = new_way;
-    }
-}
-
 void aprocs(Map& map,  vector<Point>& way){
     vector<Point> new_way;
     int first_i = 0;
@@ -240,7 +169,6 @@ void found_way(Map& map, Point& star, Point fin, char cost_parametr)
     Point temp;
     vector<Point> order;
     queue.enqueue(star);
-    //int order_q = 1;
     while (!queue.isEmpty()){
         temp = queue.peek();
         Point temp_2;
@@ -317,8 +245,6 @@ void found_way(Map& map, Point& star, Point fin, char cost_parametr)
     for (int i = 0; i < way.size(); i++){
         cout<<way[i].x_cord<<";"<<way[i].y_cord<<endl;
     }
-
-
 }
 
 #endif
