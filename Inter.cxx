@@ -22,7 +22,7 @@ int main(){
     Map map(100, 100);
 
 
-    cout << "Координаты старости:" << "\n";
+    cout << "Координаты старта:" << "\n";
     cin >> star.x_cord;
     cin >> star.y_cord;
 

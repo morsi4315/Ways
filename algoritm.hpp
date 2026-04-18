@@ -7,7 +7,7 @@
 
 #include "common_types.hpp"
 #include "map_looker.hpp"
-#include "algoritm_order_neighbor.hpp"
+//#include "algoritm_order_neighbor.hpp"
 #include "costs.hpp"
 
 //        map.at(point_new.y_cord, point_new.x_cord).ugle = point_new.z_cord - point.z_cord;
@@ -16,6 +16,58 @@ using namespace std;
 
 #ifndef ALGORITM_H
 #define ALGORITM_H
+
+void Brezenhem(Map map, vector<Point>& order, Point point0, Point point1)
+{
+  int x0 = point0.x_cord;
+  int y0 = point0.y_cord;
+  int x1 = point1.x_cord;
+  int y1 = point1.y_cord;
+  int A, B, sign;
+  A = y1 - y0;
+  B = x0 - x1;
+  if (abs(A) > abs(B))
+    sign = 1;
+  else
+    sign = -1;
+  int signa, signb;
+  if (A < 0)
+    signa = -1;
+  else
+    signa = 1;
+  if (B < 0)
+    signb = -1;
+  else
+    signb = 1;
+  int f = 0;
+  order.push_back(map.at(y0, x0));
+  int x = x0, y = y0;
+  if (sign == -1)
+  {
+    do {
+      f += A * signa;
+      if (f > 0)
+      {
+        f -= B * signb;
+        y += signa;
+      }
+      x -= signb;
+      order.push_back(map.at(y, x));
+    } while (x != x1 || y != y1);
+  }
+  else
+  {
+    do {
+      f += B * signb;
+      if (f > 0) {
+        f -= A * signa;
+        x -= signb;
+      }
+      y += signa;
+      order.push_back(map.at(y, x));
+    } while (x != x1 || y != y1);
+  }
+}
 
  void step(Map& map, Queue& queue, Point point, Point point_new, char cost_parametr){
     long double step;
@@ -103,10 +155,7 @@ void aprocs2(Map& map, vector<Point>& way, Point star, Point fin){
                 actual_ugle = last_point.z_cord - temp.z_cord;
                 cout << actual_ugle << endl;
             }
-            //cout <<"*****"<<endl;
-            //cout <<"last_i = " << last_i<<endl;
-            //cout <<"i = " << i<<endl;
-            //cout <<"*****"<<endl;
+
             bool check = false;
             if (i - last_i > 3){
                 check = true;
@@ -186,10 +235,7 @@ void aprocs(Map& map,  vector<Point>& way){
         }
         last_order.clear();
 //
-        /*
-        new_way.push_back(way[first_i]);
-        new_way.push_back(way[i - 1]);
-        */
+
         first_i = i;
     }
     way = new_way;
@@ -201,28 +247,78 @@ void found_way(Map& map, Point& star, Point fin, char cost_parametr)
     Point temp;
     vector<Point> order;
     queue.enqueue(star);
-    int order_q = 1;
+    //int order_q = 1;
     while (!queue.isEmpty()){
         temp = queue.peek();
+        Point temp_2;
         queue.dequeue();
         temp.visited = false;
         order.clear();
-        order_neighbor(order, map, fin, temp, order_q);
+        if ((temp.from != Directs::RIGHT) and (temp.x_cord + 1 < map.width))
+        {
+            temp_2 = map.at(temp.y_cord, temp.x_cord + 1);
+            temp_2.from = Directs::LEFT;
+            order.push_back(temp_2);
+        };
+
+        if ((temp.from != Directs::UP) and (temp.y_cord + 1 < map.height))
+        {
+            temp_2 = map.at(temp.y_cord + 1, temp.x_cord);
+            temp_2.from = Directs::DOWN;
+            order.push_back(temp_2);
+        }
+
+        if ((temp.from != Directs::LEFT) and (temp.x_cord - 1 >= 0))
+        {
+            temp_2 = map.at(temp.y_cord, temp.x_cord - 1);
+            temp_2.from = Directs::RIGHT;
+            order.push_back(temp_2);
+        }
+
+        if ((temp.from != Directs::DOWN) and (temp.y_cord - 1 >= 0))
+        {
+            temp_2 = map.at(temp.y_cord - 1, temp.x_cord);
+            temp_2.from = Directs::UP;
+            order.push_back(temp_2);
+        }
+
+        if ((temp.from != Directs::UP_R) and (temp.x_cord + 1 < map.width) and (temp.y_cord + 1 < map.height))
+        {
+            temp_2 = map.at(temp.y_cord + 1, temp.x_cord + 1);
+            temp_2.from = Directs::DOWN_L;
+            order.push_back(temp_2);
+        }
+
+        if ((temp.from != Directs::DOWN_R) and (temp.x_cord + 1 < map.height) and (temp.y_cord - 1 >= 0))
+        {
+            temp_2 = map.at( temp.y_cord - 1, temp.x_cord + 1);
+            temp_2.from = Directs::UP_L;
+            order.push_back(temp_2);
+        }
+
+        if ((temp.from != Directs::DOWN_L) and (temp.x_cord - 1 >= 0) and  (temp.y_cord - 1 >= 0))
+        {
+            temp_2 = map.at(temp.y_cord - 1, temp.x_cord - 1);
+            temp_2.from = Directs::UP_R;
+            order.push_back(temp_2);
+        }
+
+        if ((temp.from != Directs::UP_L) and (temp.x_cord - 1 >= 0) and (temp.y_cord + 1 < map.height))
+        {
+            temp_2 = map.at(temp.y_cord + 1, temp.x_cord - 1);
+            temp_2.from = Directs::DOWN_R;
+            order.push_back(temp_2);
+        }
+        //order_neighbor(order, map, fin, temp, order_q);
         for (int i = 0; i < order.size(); i++)
         {
             step(map, queue, temp, order[i], cost_parametr);
         }
-        order_q++;
+        //order_q++;
     }
     vector<Point> way;
     build_way(map, way, fin);
 
-    /*
-    cout << "============" << endl;
-    for (int i = 0; i < way.size(); i++){
-        cout<<way[i].x_cord<<";"<<way[i].y_cord<<endl;
-    }*/
-    //aprocs( map, way, star, fin);
     aprocs(map, way);
     cout << "============" << endl;
     for (int i = 0; i < way.size(); i++){
