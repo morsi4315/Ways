@@ -15,9 +15,7 @@ int main(){
     setlocale(LC_ALL, "Russian");                   //Локализация и приветствие 
     cout << endl << "Ways         " << endl << "Эта программа строит оптимальный путь на местности." << endl << "============================================" << endl << endl;
 
-     Point star, fin;
-
-    //Map map("map4.png");
+    Point star, fin;
 
     Map map(100, 100);
 
@@ -50,12 +48,4 @@ int main(){
 
     found_way(map, star, fin, 's');
 
-
-    //logs
-    // for (int i = 20; i >= 0; i--){
-    //     for (int j = 20; j >= 0; j--){
-    //         cout << map.at(i, j).steps << ";";
-    //     }
-    //     cout << "\n";
-    // }
 }

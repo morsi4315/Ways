@@ -7,10 +7,7 @@
 
 #include "common_types.hpp"
 #include "map_looker.hpp"
-//#include "algoritm_order_neighbor.hpp"
 #include "costs.hpp"
-
-//        map.at(point_new.y_cord, point_new.x_cord).ugle = point_new.z_cord - point.z_cord;
 
 using namespace std;
 
@@ -85,10 +82,7 @@ void Brezenhem(Map map, vector<Point>& order, Point point0, Point point1)
  void build_way(Map& map, vector<Point>& way, Point& fin)
 {
     Point temp;
-   // vector<Point> way;
-    cout<<"Полученный путь: "<<endl;
     temp = map.at(fin.y_cord, fin.x_cord);
-    //cout<<temp.x_cord<<";"<<temp.y_cord<<endl;
     way.push_back(temp);
     while (temp.from != Directs::NONE)
     {
@@ -120,7 +114,6 @@ void Brezenhem(Map map, vector<Point>& order, Point point0, Point point1)
                 temp = map.at(temp.y_cord - 1, temp.x_cord + 1);
                 break;
         }
-        //cout<<temp.x_cord<<";"<<temp.y_cord<<endl;
         way.push_back(temp);
     }
 }
@@ -309,17 +302,17 @@ void found_way(Map& map, Point& star, Point fin, char cost_parametr)
             temp_2.from = Directs::DOWN_R;
             order.push_back(temp_2);
         }
-        //order_neighbor(order, map, fin, temp, order_q);
+        
         for (int i = 0; i < order.size(); i++)
         {
             step(map, queue, temp, order[i], cost_parametr);
         }
-        //order_q++;
     }
     vector<Point> way;
     build_way(map, way, fin);
 
     aprocs(map, way);
+    cout<<"Полученный путь: "<<endl;
     cout << "============" << endl;
     for (int i = 0; i < way.size(); i++){
         cout<<way[i].x_cord<<";"<<way[i].y_cord<<endl;
