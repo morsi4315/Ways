@@ -13,7 +13,7 @@ using namespace std;
 
 int main(){
     setlocale(LC_ALL, "Russian");                   //Локализация и приветствие 
-    cout << endl << "Ways         " << endl << "Эта программа строит оптимальный путь на местности." << endl << "============================================" << endl << endl;
+    cout << "Ways         " << endl << "Эта программа строит оптимальный путь на местности." << endl << "============================================" << endl << endl;
 
     Point star, fin;
 
@@ -24,7 +24,7 @@ int main(){
     cin >> star.x_cord;
     cin >> star.y_cord;
 
-    cout << "\nКоординаты финиша" << "\n";
+    cout << "\nКоординаты финиша:" << "\n";
     cin >> fin.x_cord;
     cin >> fin.y_cord;
     cout <<endl;

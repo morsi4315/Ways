@@ -118,49 +118,77 @@ void Brezenhem(Map map, vector<Point>& order, Point point0, Point point1)
     }
 }
 
-void aprocs(Map& map,  vector<Point>& way){
-    vector<Point> new_way;
-    int first_i = 0;
-    while(true){
-        int i = first_i + 2;
-        if (i >= way.size()){
-            for (int j = first_i; j < way.size(); j++ ){
-                new_way.push_back(way[j]);
-            }
-            break;
-        }
-        float first_ugle = way[first_i].z_cord - way[first_i + 1].z_cord;
-        vector<Point> last_order;
-        while(true){
-            vector<Point> order;
-            Brezenhem(map, order, way[first_i], way[i]);
-//
-//
-            bool check = true;
-            for (int j = 0; j < order.size() - 1; j++){
-                float actual_ugle = order[j].z_cord - order[j + 1].z_cord;
+void massravmass(vector<Point>& a, vector<Point> b){
+    a.clear();
+    for(int i = 0; i < b.size(); i++){
+        a.push_back(b[i]);
+    }
+}
+
+void aprocs(Map& map, vector<Point>& way){
+    int i = 0;
+    int j = i + 2;
+    while (j < way.size() ){
+        bool check = true;
+        while (check and j < way.size()){
+            vector<Point> brh;
+            Brezenhem(map, brh, way[i], way[j]);
+            float first_ugle = brh[0].z_cord - brh[1].z_cord;
+            for (int n = 1; n < brh.size() - 1; n++){
+                float actual_ugle = brh[n].z_cord - brh[n + 1].z_cord;
                 if (actual_ugle != first_ugle){
                     check = false;
                     break;
                 }
             }
-            if (check == false){break;}
-            i++;
-            last_order.clear();
-            last_order = order;
-            if (i == way.size()){break;}
+            j++;
         }
-//
-
-        for(int j = 0; j < last_order.size(); j ++){
-            new_way.push_back(last_order[j]);
+        j--;
+        if ((check == false) and (i - j > 2)){
+            vector<Point> way_new;
+            int k = 0;
+            for (int r = 0; r < j; r++){
+                way_new.push_back(way[r]);
+                //way_new[k] = way[k];
+            }
+            vector<Point> brh;
+            Brezenhem(map, brh, way[i], way[j - 2]);
+            for (int r = 0; r < brh.size(); r++){
+                way_new.push_back(brh[r]);
+                // k++;
+                // way_new[k] = brh[r];
+            }
+            for (int r = j; r < way.size(); r++){
+                way_new.push_back(way[r]);
+                // k++;
+                // way_new[k] = way[r];
+            }
+            massravmass(way, way_new);
+            way_new.clear();
+            //way = way_new;
         }
-        last_order.clear();
-//
-
-        first_i = i;
+        else if (check == true){
+            vector<Point> way_new;
+            int k = 0;
+            for (int r = 0; r < i; r++){
+                way_new.push_back(way[r]);
+                //way_new[k] = way[k];
+            }
+            vector<Point> brh;
+            Brezenhem(map, brh, way[i], way[j]);
+            for (int r = 0; r < brh.size(); r++){
+                way_new.push_back(brh[r]);
+                // k++;
+                // way_new[k] = brh[r];
+            }
+            massravmass(way, way_new);
+            //way = way_new;
+            way_new.clear();
+            break;
+        }
+    i++;
+    j = i + 2;
     }
-    way = new_way;
 }
 
 void found_way(Map& map, Point& star, Point fin, char cost_parametr)
@@ -241,7 +269,7 @@ void found_way(Map& map, Point& star, Point fin, char cost_parametr)
 
     aprocs(map, way);
     cout<<"Полученный путь: "<<endl;
-    cout << "============" << endl;
+    cout << "============================" << endl;
     for (int i = 0; i < way.size(); i++){
         cout<<way[i].x_cord<<";"<<way[i].y_cord<<endl;
     }
