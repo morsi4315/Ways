@@ -17,7 +17,11 @@ int main(){
 
     Point star, fin;
 
-    Map map(100, 100);
+    Map map("test_map.png");
+    //Map map(100, 100);
+
+    cout << "wheight: " << map.width << endl;
+    cout<<"height: " << map.height << endl;
 
 
     cout << "Координаты старта:" << "\n";

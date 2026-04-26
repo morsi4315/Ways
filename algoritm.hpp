@@ -72,9 +72,9 @@ void Brezenhem(Map map, vector<Point>& order, Point point0, Point point1)
     if ((point_new.steps > step ) or (point_new.steps == -1)){
         map.at(point_new.y_cord, point_new.x_cord).steps = step;
         map.at(point_new.y_cord, point_new.x_cord).from = point_new.from;
-        if (point_new.visited == false){
-            queue.enqueue(map.at(point_new.y_cord, point_new.x_cord));
+        if (map.at(point_new.y_cord, point_new.x_cord).visited == false){
             map.at(point_new.y_cord, point_new.x_cord).visited = true;
+            queue.enqueue(map.at(point_new.y_cord, point_new.x_cord));
         }
     }
  }
@@ -86,7 +86,6 @@ void Brezenhem(Map map, vector<Point>& order, Point point0, Point point1)
     way.push_back(temp);
     while (temp.from != Directs::NONE)
     {
-
         switch(temp.from)
         {
             case Directs::DOWN:
@@ -146,43 +145,32 @@ void aprocs(Map& map, vector<Point>& way){
         j--;
         if ((check == false) and (i - j > 2)){
             vector<Point> way_new;
-            int k = 0;
             for (int r = 0; r < j; r++){
                 way_new.push_back(way[r]);
-                //way_new[k] = way[k];
             }
             vector<Point> brh;
             Brezenhem(map, brh, way[i], way[j - 2]);
             for (int r = 0; r < brh.size(); r++){
                 way_new.push_back(brh[r]);
-                // k++;
-                // way_new[k] = brh[r];
             }
             for (int r = j; r < way.size(); r++){
                 way_new.push_back(way[r]);
-                // k++;
-                // way_new[k] = way[r];
             }
             massravmass(way, way_new);
             way_new.clear();
-            //way = way_new;
         }
         else if (check == true){
             vector<Point> way_new;
             int k = 0;
             for (int r = 0; r < i; r++){
                 way_new.push_back(way[r]);
-                //way_new[k] = way[k];
             }
             vector<Point> brh;
             Brezenhem(map, brh, way[i], way[j]);
             for (int r = 0; r < brh.size(); r++){
                 way_new.push_back(brh[r]);
-                // k++;
-                // way_new[k] = brh[r];
             }
             massravmass(way, way_new);
-            //way = way_new;
             way_new.clear();
             break;
         }
@@ -201,7 +189,7 @@ void found_way(Map& map, Point& star, Point fin, char cost_parametr)
         temp = queue.peek();
         Point temp_2;
         queue.dequeue();
-        temp.visited = false;
+        //temp.visited = false;
         order.clear();
         if ((temp.from != Directs::RIGHT) and (temp.x_cord + 1 < map.width))
         {
@@ -238,7 +226,7 @@ void found_way(Map& map, Point& star, Point fin, char cost_parametr)
             order.push_back(temp_2);
         }
 
-        if ((temp.from != Directs::DOWN_R) and (temp.x_cord + 1 < map.height) and (temp.y_cord - 1 >= 0))
+        if ((temp.from != Directs::DOWN_R) and (temp.x_cord + 1 < map.width) and (temp.y_cord - 1 >= 0))
         {
             temp_2 = map.at( temp.y_cord - 1, temp.x_cord + 1);
             temp_2.from = Directs::UP_L;
@@ -266,7 +254,6 @@ void found_way(Map& map, Point& star, Point fin, char cost_parametr)
     }
     vector<Point> way;
     build_way(map, way, fin);
-
     aprocs(map, way);
     cout<<"Полученный путь: "<<endl;
     cout << "============================" << endl;

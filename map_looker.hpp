@@ -4,6 +4,7 @@
 #include <vector>
 #include <math.h>
 #include <iomanip>
+#include "library/stb_image.h"
 
 #include "common_types.hpp"
 
@@ -21,8 +22,42 @@ struct Map
 
     vector<Point> verts;
 
-    //Map(const string& inputFilename){}
+    Map(const string& inputFilename){
+        int channels;
+        unsigned char* data = stbi_load(inputFilename.c_str(), &width, &height, &channels, 1);
 
+        if (!data){
+            cerr << "Ошибка загрузки изображения: " << stbi_failure_reason() << endl;
+            width = height = kol_verts = 0;
+            scale = 1.0f;
+            return;
+        }
+
+        kol_verts = width * height;
+        scale = 1.0f;
+        verts.resize(kol_verts);
+
+        for (int y = 0; y < height; y++){
+            for (int x = 0; x < width; x++){
+                verts[y*width + x].z_cord = data[y*width + x];
+                verts[y*width + x].y_cord = y;
+                verts[y*width + x].x_cord = x;
+            }
+        }
+
+        stbi_image_free(data);
+    }
+
+    Point& at(int y, int x)
+    {
+        return verts[y*width + x];
+    }
+};
+
+#endif
+
+
+  /*
     Map(const int w, const int h){
         verts.resize(w*h);
         for (int i = 0; i < w; i++)
@@ -48,11 +83,4 @@ struct Map
         height = h;
         kol_verts = w*h;
     }
-
-    Point& at(int x, int y)
-    {
-        return verts[y*width + x];
-    }
-};
-
-#endif
+    */
