@@ -1,0 +1,7 @@
+Запуск: 
+    ./program;
+
+Если внесены изменения: 
+    make clean
+    make
+    ./program
