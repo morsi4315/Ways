@@ -37,12 +37,12 @@ int main(){
 
 
 
-    if ((star.x_cord < 0) or (star.y_cord < 0) or (star.x_cord > map.width) or (star.y_cord > map.height))
+    if ((star.x_cord < 0) or (star.y_cord < 0) or (star.x_cord >= map.width) or (star.y_cord >= map.height))
     {
         cerr <<"Error: Начало пути за пределом карты."<< endl;
         return 0;
     }
-    if ((fin.x_cord < 0) or (fin.y_cord < 0) or (fin.x_cord > map.width) or (fin.y_cord > map.height))
+    if ((fin.x_cord < 0) or (fin.y_cord < 0) or (fin.x_cord >= map.width) or (fin.y_cord >= map.height))
     {
         cerr <<"Error: Финиш пути за пределом карты."<< endl;
         return 0;
