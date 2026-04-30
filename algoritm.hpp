@@ -257,9 +257,12 @@ void found_way(Map& map, Point& star, Point fin, char cost_parametr)
     aprocs(map, way);
     cout<<"Полученный путь: "<<endl;
     cout << "============================" << endl;
+    ofstream file("way.obj");
     for (int i = 0; i < way.size(); i++){
-        cout<<way[i].x_cord<<";"<<way[i].y_cord<<endl;
+        file<<way[i].x_cord<<";"<<way[i].y_cord<<endl;
+        //cout<<way[i].x_cord<<";"<<way[i].y_cord<<endl;
     }
+    file.close();
 }
 
 #endif

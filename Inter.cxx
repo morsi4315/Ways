@@ -7,6 +7,7 @@
 #include "common_types.hpp"
 #include "map_looker.hpp"
 #include "algoritm.hpp"
+#include "view.hpp"
 
 
 using namespace std;
@@ -16,8 +17,9 @@ int main(){
     cout << "Ways         " << endl << "Эта программа строит оптимальный путь на местности." << endl << "============================================" << endl << endl;
 
     Point star, fin;
+    string map_name = "test_map.png";
 
-    Map map("test_map.png");
+    Map map(map_name);
     //Map map(100, 100);
 
     cout << "wheight: " << map.width << endl;
@@ -51,5 +53,10 @@ int main(){
     fin.z_cord = map.at(fin.y_cord, fin.x_cord).z_cord;
 
     found_way(map, star, fin, 's');
+
+    view(map_name, "way.obj");
+
+    cout << "Нажмите Enter, чтобы выйти...";
+    cin.get();
 
 }
