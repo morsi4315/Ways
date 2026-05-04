@@ -14,9 +14,9 @@ long double found_cost(Point A, Point B, char cost_parametr) //поиск цен
             float x;
             z = B.z_cord - A.z_cord;
             if ((A.x_cord != B.x_cord) and (A.y_cord != B.y_cord)){
-                //x = sqrt(2);
+                x = sqrt(2);
                 //cout << x << endl;
-                x = 2;
+                //x = 2;
             }
             else
             {

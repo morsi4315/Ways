@@ -14,7 +14,28 @@ using namespace std;
 #ifndef ALGORITM_H
 #define ALGORITM_H
 
-void Brezenhem(Map map, vector<Point>& order, Point point0, Point point1)
+void Brezenhem(Map& map, vector<Point>& order, Point point0, Point point1) {
+    int x0 = point0.x_cord, y0 = point0.y_cord;
+    int x1 = point1.x_cord, y1 = point1.y_cord;
+
+    int dx = abs(x1 - x0), dy = abs(y1 - y0);
+    int sx = (x0 < x1) ? 1 : -1;
+    int sy = (y0 < y1) ? 1 : -1;
+    int err = dx - dy;
+
+    int x = x0, y = y0;
+    while (true) {
+        // проверка границ
+        order.push_back(map.at(y, x));
+
+        if (x == x1 && y == y1) break;
+        int e2 = 2 * err;
+        if (e2 > -dy) { err -= dy; x += sx; }
+        if (e2 < dx)  { err += dx; y += sy; }
+    }
+}
+
+void Brezenhem2(Map map, vector<Point>& order, Point point0, Point point1)
 {
   int x0 = point0.x_cord;
   int y0 = point0.y_cord;
@@ -125,6 +146,7 @@ void massravmass(vector<Point>& a, vector<Point> b){
 }
 
 void aprocs(Map& map, vector<Point>& way){
+    cout<<way[0].x_cord << " ; " << way[0].y_cord << endl;
     int i = 0;
     int j = i + 2;
     while (j < way.size() ){
@@ -141,15 +163,16 @@ void aprocs(Map& map, vector<Point>& way){
                 }
             }
             j++;
+            brh.clear();
         }
         j--;
-        if ((check == false) and (i - j > 2)){
+        if ((check == false) and (j - i > 2)){
             vector<Point> way_new;
-            for (int r = 0; r < j; r++){
+            for (int r = 0; r < i; r++){
                 way_new.push_back(way[r]);
             }
             vector<Point> brh;
-            Brezenhem(map, brh, way[i], way[j - 2]);
+            Brezenhem(map, brh, way[i], way[j - 1]);
             for (int r = 0; r < brh.size(); r++){
                 way_new.push_back(brh[r]);
             }
@@ -158,15 +181,17 @@ void aprocs(Map& map, vector<Point>& way){
             }
             massravmass(way, way_new);
             way_new.clear();
+            cout<<"way = " << way.size() <<" i = " << i << " j = " << j <<endl;
         }
         else if (check == true){
+            cout<<"!"<<endl;
             vector<Point> way_new;
-            int k = 0;
             for (int r = 0; r < i; r++){
                 way_new.push_back(way[r]);
             }
             vector<Point> brh;
             Brezenhem(map, brh, way[i], way[j]);
+            cout<<brh.size()<<endl;
             for (int r = 0; r < brh.size(); r++){
                 way_new.push_back(brh[r]);
             }
@@ -181,6 +206,7 @@ void aprocs(Map& map, vector<Point>& way){
 
 void found_way(Map& map, Point& star, Point fin, char cost_parametr)
 {
+    cout<<"<   > Построение сетки" << endl;
     Queue queue;
     Point temp;
     vector<Point> order;
@@ -252,9 +278,12 @@ void found_way(Map& map, Point& star, Point fin, char cost_parametr)
             step(map, queue, temp, order[i], cost_parametr);
         }
     }
+    cout<<"<=  > Поиск обратного пути..." << endl;
     vector<Point> way;
     build_way(map, way, fin);
+    cout<<"<== > Сглаживание..." << endl;
     aprocs(map, way);
+    cout<<"<===> Готово!" << endl;
     cout<<"Полученный путь: "<<endl;
     cout << "============================" << endl;
     ofstream file("way.obj");
