@@ -17,7 +17,7 @@ int main(){
     cout << "Ways         " << endl << "Эта программа строит оптимальный путь на местности." << endl << "============================================" << endl << endl;
 
     Point star, fin;
-    string map_name = "test_map.png";
+    string map_name = "map4.png";
 
     Map map(map_name);
     //Map map(100, 100);

@@ -35,58 +35,6 @@ void Brezenhem(Map& map, vector<Point>& order, Point point0, Point point1) {
     }
 }
 
-void Brezenhem2(Map map, vector<Point>& order, Point point0, Point point1)
-{
-  int x0 = point0.x_cord;
-  int y0 = point0.y_cord;
-  int x1 = point1.x_cord;
-  int y1 = point1.y_cord;
-  int A, B, sign;
-  A = y1 - y0;
-  B = x0 - x1;
-  if (abs(A) > abs(B))
-    sign = 1;
-  else
-    sign = -1;
-  int signa, signb;
-  if (A < 0)
-    signa = -1;
-  else
-    signa = 1;
-  if (B < 0)
-    signb = -1;
-  else
-    signb = 1;
-  int f = 0;
-  order.push_back(map.at(y0, x0));
-  int x = x0, y = y0;
-  if (sign == -1)
-  {
-    do {
-      f += A * signa;
-      if (f > 0)
-      {
-        f -= B * signb;
-        y += signa;
-      }
-      x -= signb;
-      order.push_back(map.at(y, x));
-    } while (x != x1 || y != y1);
-  }
-  else
-  {
-    do {
-      f += B * signb;
-      if (f > 0) {
-        f -= A * signa;
-        x -= signb;
-      }
-      y += signa;
-      order.push_back(map.at(y, x));
-    } while (x != x1 || y != y1);
-  }
-}
-
  void step(Map& map, Queue& queue, Point point, Point point_new, char cost_parametr){
     long double step;
     step = point.steps + (found_cost(point, point_new, cost_parametr));
@@ -172,7 +120,7 @@ void aprocs(Map& map, vector<Point>& way){
                 way_new.push_back(way[r]);
             }
             vector<Point> brh;
-            Brezenhem(map, brh, way[i], way[j - 1]);
+            Brezenhem(map, brh, way[i], way[j - 2]);
             for (int r = 0; r < brh.size(); r++){
                 way_new.push_back(brh[r]);
             }
@@ -181,10 +129,9 @@ void aprocs(Map& map, vector<Point>& way){
             }
             massravmass(way, way_new);
             way_new.clear();
-            cout<<"way = " << way.size() <<" i = " << i << " j = " << j <<endl;
+            cout<<"way = " << way.size() <<" i = " << i << " j = " << j << " (" << way[i].x_cord << " ; " << way[i].y_cord << ") - (" << way[j].x_cord << " ; " << way[j].y_cord << ")" << endl;
         }
         else if (check == true){
-            cout<<"!"<<endl;
             vector<Point> way_new;
             for (int r = 0; r < i; r++){
                 way_new.push_back(way[r]);
@@ -216,6 +163,7 @@ void found_way(Map& map, Point& star, Point fin, char cost_parametr)
         Point temp_2;
         queue.dequeue();
         //temp.visited = false;
+        map.at(temp.y_cord, temp.x_cord).visited = false;
         order.clear();
         if ((temp.from != Directs::RIGHT) and (temp.x_cord + 1 < map.width))
         {

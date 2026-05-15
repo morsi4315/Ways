@@ -128,7 +128,8 @@ void draw_add_way(const std::string& way_file_path, const std::string& map_file_
     }
 
     mp::hold(mp::on);
-    mp::plot3(xs, ys, zs)->line_width(linewidth).color(color);
+    //mp::plot3(xs, ys, zs)->line_width(linewidth).color(color);
+    mp::plot3(ys, xs, zs)->line_width(linewidth).color(color);
     mp::hold(mp::off);
 }
 // ----------------------------------------------------------------------
