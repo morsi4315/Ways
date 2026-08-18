@@ -129,7 +129,6 @@ void aprocs(Map& map, vector<Point>& way){
             }
             massravmass(way, way_new);
             way_new.clear();
-            cout<<"way = " << way.size() <<" i = " << i << " j = " << j << " (" << way[i].x_cord << " ; " << way[i].y_cord << ") - (" << way[j].x_cord << " ; " << way[j].y_cord << ")" << endl;
         }
         else if (check == true){
             vector<Point> way_new;
